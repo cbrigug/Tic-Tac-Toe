@@ -1,0 +1,378 @@
+var WIDTH = 400;
+var HEIGHT = 400;
+setSize(WIDTH, HEIGHT);
+var newGrid = new Grid(3, 3);
+
+var WINNING_LINE_WIDTH = 10;
+var WINNING_LINE_COLOR = Color.red;
+
+//This states that i starts at 0 so the function onMouseClick works correctly and can alternate between both functions
+var i = 0;
+
+//This function first makes the grid, as well as resets it by making it have a value of 0 when hitting "Run Code"
+//Then runs the onMouseClick program every time the mouse is clicked
+function start(){
+	makeGrid();
+	newGrid.init(0);
+	mouseClickMethod(onMouseClick);
+}
+
+function drawLine(x1,y1,x2,y2){
+    var line = new Line(x1, y1, x2, y2);
+    line.setColor(Color.black);
+    add(line);
+}
+
+//Draws the tic tac toe grid
+function makeGrid(){
+    drawLine(WIDTH/3,0,WIDTH/3,HEIGHT);
+	drawLine(2*WIDTH/3,0,2*WIDTH/3,HEIGHT);
+    drawLine(0,HEIGHT/3,WIDTH,HEIGHT/3);
+    drawLine(0,2*HEIGHT/3,WIDTH,2*HEIGHT/3);
+}
+
+//Alternates between executing the drawX function and drawO on the click of the mouse.
+function onMouseClick(e) {
+    
+    i++;
+    if(i%2==1){
+	    drawX(e);
+    } else {
+        drawO(e);
+    }
+}
+
+//This function will only draw an O if the value for that square of the grid is equal to 0 (To avoid overlapping X's and O's)
+//It makes an O by puting a large circle than a smaller, white circle inside of it
+//After making each O it will check to see if there is 3 in-a-row to see if there is a winner
+//This function finds where your mouse clicked and puts an O in the center of the box in which the mouse was clicked
+function drawO(e){
+    var elem = newGrid.get(0, 0);
+    if (elem==0){
+            if(e.getX()>=0 && e.getX()<=WIDTH/3 && e.getY()<=HEIGHT/3){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH/6,HEIGHT/6);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH/6,HEIGHT/6);
+	        ball.setColor(Color.white);
+	        add(ball);
+	        newGrid.set(0,0,10);
+	        checkForWin();
+        }
+    }
+
+    if(e.getX()>=WIDTH/3 && e.getX()<=2*WIDTH/3 && e.getY()<=HEIGHT/3){
+        var elem = newGrid.get(0, 1);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH/2,HEIGHT/6);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH/2,HEIGHT/6);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(0,1,10);
+            checkForWin();
+        } 
+    }
+    
+    if(e.getX()>=2*WIDTH/3 && e.getX()<=WIDTH && e.getY()<=HEIGHT/3){
+        var elem = newGrid.get(0, 2);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH-WIDTH*1/6,HEIGHT/6);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH-WIDTH*1/6,HEIGHT/6);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(0,2,10);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=0 && e.getX()<=WIDTH/3 && e.getY()>=HEIGHT/3 && e.getY()<=2*HEIGHT/3){
+        var elem = newGrid.get(1, 0);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH/6,HEIGHT/2);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH/6,HEIGHT/2);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(1,0,10);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=0 && e.getX()<=WIDTH/3 && e.getY()>=2*HEIGHT/3){
+        var elem = newGrid.get(2, 0);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH/6,HEIGHT-HEIGHT*1/6);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH/6,HEIGHT-HEIGHT*1/6);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(2,0,10);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=WIDTH/3 && e.getX()<=2*WIDTH/3 && e.getY()>=HEIGHT/3 && e.getY()<=2*HEIGHT/3){
+        var elem = newGrid.get(1, 1);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH/2,HEIGHT/2);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH/2,HEIGHT/2);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(1,1,10);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=WIDTH/3 && e.getX()<=2*WIDTH/3 && e.getY()>=2*HEIGHT/3 && e.getY()<=HEIGHT){
+        var elem = newGrid.get(2, 1);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH/2,HEIGHT-HEIGHT*1/6);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH/2,HEIGHT-HEIGHT*1/6);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(2,1,10);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=2*WIDTH/3 && e.getX()<=WIDTH && e.getY()>=HEIGHT/3 && e.getY()<=2*HEIGHT/3){
+        var elem = newGrid.get(1, 2);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH-WIDTH*1/6,HEIGHT/2);
+	        ball.setColor(Color.black);
+	        add(ball);
+	        var ball = new Circle(55);
+	        ball.setPosition(WIDTH-WIDTH*1/6,HEIGHT/2);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(1,2,10);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=2*WIDTH/3 && e.getX()<=WIDTH && e.getY()>=2*HEIGHT/3 && e.getY()<=HEIGHT){
+        var elem = newGrid.get(2, 2);
+        if (elem==0){
+            var ball = new Circle(58);
+	        ball.setPosition(WIDTH-WIDTH*1/6,HEIGHT-HEIGHT*1/6);
+	        ball.setColor(Color.black);
+	        add(ball);
+            var ball = new Circle(55);
+	        ball.setPosition(WIDTH-WIDTH*1/6,HEIGHT-HEIGHT*1/6);
+	        ball.setColor(Color.white);
+	        add(ball);
+            newGrid.set(2,2,10);
+            checkForWin();
+        }
+    }
+}
+
+//This function will only draw an X if the value for that square of the grid is equal to 0 (To avoid overlapping X's and O's)
+//It makes an X by putting an image of an X where it is clicked
+//After making each X it will check to see if there is 3 in-a-row to see if there is a winner
+//This function finds where your mouse clicked and puts an X in the center of the box in which the mouse was clicked
+function drawX(e){
+   
+    if(e.getX()>=0 && e.getX()<=WIDTH/3 && e.getY()<=HEIGHT/3){
+        var elem = newGrid.get(0, 0);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(0,0);
+            add(x);
+            newGrid.set(0,0,1);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=WIDTH/3 && e.getX()<=2*WIDTH/3 && e.getY()<=HEIGHT/3){
+        var elem = newGrid.get(0, 1);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(WIDTH/3,0);
+            add(x);
+            newGrid.set(0,1,1);
+            checkForWin();
+        }
+    }
+
+    if(e.getX()>=2*WIDTH/3 && e.getX()<=WIDTH && e.getY()<=HEIGHT/3){
+        var elem = newGrid.get(0, 2);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(2*WIDTH/3,0);
+            add(x);
+            newGrid.set(0,2,1);
+            checkForWin();
+        }
+    }
+
+    if(e.getX()>=0 && e.getX()<=WIDTH/3 && e.getY()>=HEIGHT/3 && e.getY()<=2*HEIGHT/3){
+        var elem = newGrid.get(1, 0);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(0,HEIGHT/3);
+            add(x);
+            newGrid.set(1,0,1);
+            checkForWin();
+        }
+    }
+
+    if(e.getX()>=0 && e.getX()<=WIDTH/3 && e.getY()>=2*HEIGHT/3){
+        var elem = newGrid.get(2, 0);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(0,2*HEIGHT/3);
+            add(x);
+            newGrid.set(2,0,1);
+            checkForWin();
+        }
+    }
+
+    if(e.getX()>=WIDTH/3 && e.getX()<=2*WIDTH/3 && e.getY()>=HEIGHT/3 && e.getY()<=2*HEIGHT/3){
+        var elem = newGrid.get(1, 1);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(WIDTH/3,HEIGHT/3);
+            add(x);
+            newGrid.set(1,1,1);
+            checkForWin();
+        }
+    }
+
+    if(e.getX()>=WIDTH/3 && e.getX()<=2*WIDTH/3 && e.getY()>=2*HEIGHT/3 && e.getY()<=HEIGHT){
+        var elem = newGrid.get(2, 1);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(WIDTH/3,2*HEIGHT/3);
+            add(x);
+            newGrid.set(2,1,1);
+            checkForWin();
+        }
+    }
+
+    if(e.getX()>=2*WIDTH/3 && e.getX()<=WIDTH && e.getY()>=HEIGHT/3 && e.getY()<=2*HEIGHT/3){
+        var elem = newGrid.get(1, 2);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(2*WIDTH/3,HEIGHT/3);
+            add(x);
+            newGrid.set(1,2,1);
+            checkForWin();
+        }
+    }
+    
+    if(e.getX()>=2*WIDTH/3 && e.getX()<=WIDTH && e.getY()>=2*HEIGHT/3 && e.getY()<=HEIGHT){
+        var elem = newGrid.get(2, 2);
+        if (elem==0){
+            var x = new WebImage("https://vignette.wikia.nocookie.net/badcreepypasta/images/6/6a/Back-x-clip-art.png/revision/latest?cb=20170409172915");
+            x.setSize(130,130);
+            x.setPosition(2*WIDTH/3,2*HEIGHT/3);
+            add(x);
+            newGrid.set(2,2,1);
+            checkForWin();
+        }
+    }
+}
+//This is a function that checks each possible scenario for if there is 3 X's or 3 O's in a row in order to win the game
+//Each X is assigned a value of 1, while each O is assigned a value of 10, when there is a total of 3 (1+1+1) or 30 (10+10+10), you know that there is a winner
+//It prints a red line over where there is a winner and also prints "Winner!" when someone has won
+function checkForWin(){
+    if(newGrid.get(0, 0) + newGrid.get(0, 1) + newGrid.get(0, 2)==3||newGrid.get(0, 0) + newGrid.get(0, 1) + newGrid.get(0, 2)==30){
+        var line = new Line(0,HEIGHT/6,WIDTH,HEIGHT/6);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+
+    if(newGrid.get(1, 0) + newGrid.get(1, 1) + newGrid.get(1, 2)==3||newGrid.get(1, 0) + newGrid.get(1, 1) + newGrid.get(1, 2)==30){
+        var line = new Line(0,HEIGHT/2,WIDTH,HEIGHT/2);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+
+    if(newGrid.get(2, 0) + newGrid.get(2, 1) + newGrid.get(2, 2)==3||newGrid.get(2, 0) + newGrid.get(2, 1) + newGrid.get(2, 2)==30){
+        var line = new Line(0,5*HEIGHT/6,WIDTH,5*HEIGHT/6);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+    
+    if(newGrid.get(0, 0) + newGrid.get(1, 0) + newGrid.get(2, 0)==3||newGrid.get(0, 0) + newGrid.get(1, 0) + newGrid.get(2, 0)==30){
+        var line = new Line(WIDTH/6,0,WIDTH/6,HEIGHT);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+
+    if(newGrid.get(0, 1) + newGrid.get(1, 1) + newGrid.get(2, 1)==3||newGrid.get(0, 1) + newGrid.get(1, 1) + newGrid.get(2, 1)==30){
+        var line = new Line(WIDTH/2,0,WIDTH/2,HEIGHT);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+    
+    if(newGrid.get(0, 2) + newGrid.get(1, 2) + newGrid.get(2, 2)==3||newGrid.get(0, 2) + newGrid.get(1, 2) + newGrid.get(2, 2)==30){
+        var line = new Line(5*WIDTH/6,0,5*WIDTH/6,HEIGHT);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+    
+    if(newGrid.get(0, 0) + newGrid.get(1, 1) + newGrid.get(2, 2)==3||newGrid.get(0, 0) + newGrid.get(1, 1) + newGrid.get(2, 2)==30){
+        var line = new Line(0,0,WIDTH,HEIGHT);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+
+    if(newGrid.get(0, 2) + newGrid.get(1, 1) + newGrid.get(2, 0)==3||newGrid.get(0, 2) + newGrid.get(1, 1) + newGrid.get(2, 0)==30){
+        var line = new Line(0,HEIGHT,WIDTH,0);
+        line.setColor(Color.red);
+        line.setLineWidth(10);
+        add(line);
+        println("Winner!");
+    }
+}
+
+
